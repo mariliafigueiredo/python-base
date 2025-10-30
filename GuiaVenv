@@ -1,0 +1,217 @@
+#CONECTANDO VENV
+
+"""
+python -m site
+cd python-base
+python -m venv .venv
+dir /ad
+where python
+.venv\scripts\activate.bat
+python -m site
+"""
+"""
+Get-Content prefixcalc.py
+Get-Content prefixcalc.log
+"""
+#ALTERANDO NOME DO ARQUIVO 
+"""ren nome_origem nome_destino"""
+
+# COPIAR ARQUIVO 
+"""copy nome_origem nome_destino"""
+
+#Para lidar com sistemas de arquivo usar import os
+
+#Listar conteúdo da pasta atual
+"""
+os.listdir lista diretorio
+os.curdir diretorio atual
+
+os.listdir("os.curdir")
+
+Assim é possível fatiar, pegar um elemento do final
+os.listdir(".")[1]
+os.listdir(".")[:4]
+os.listdir(".")[-1]
+"""
+
+#Mudar de um diretorio para o outro
+
+"""
+os.mkdir("pasta1")
+
+os.listdir("os.curdir") ou os.listdir(".")
+
+** Criar Pasta dentro de outra pasta
+
+os.mkdir("pasta1/subpasta)
+
+os.makdirs("pasta1/subpasta, exist_ok = True)
+
+o windows usa \ barra invertida o linux usa barra normal /
+
+Se o programa for rodar em mais de um sistema operaconal para resolver isso criamos o objeto path
+
+path = os.path.join("pasta1","subpasta")
+
+os.curdir(")
+
+"""
+
+# Como criar um arquivo dentro da pasta da subpasta
+"""
+os.listdir(path)
+
+os.mknod("arquivo.txt") dessa forma cria o arquivo na pasta atual
+
+os.mknod(os.path.join(path, "arquivo.txt")) dessa forma cria o arquivo na subpasta
+
+os.listdir(path)
+
+"""
+
+#Como colocar conteúdo dentro do arquivo, precisa de um descriptor
+"""
+path
+
+os.path.join(path, "arquivo.txt")
+
+filepath = os.path.join(path, "arquivo.txt")
+
+path
+filepath
+
+*Retorna o nome do arquivo do filepath
+os.path.basename(filepath)
+* O arquivo existe
+os.path.exists(filepath)
+*Caminho completo
+os.path.abspath(path)
+
+"""
+
+# file descriptor
+"""
+open(filepath)
+
+arquivo = open(filepath, "r") r significa modo leitura w modo de escrita
+
+*Leitura do arquivo
+arquivo.read()
+
+*Escrita do arquivo
+arquivo = open(filepath, "w")
+
+arquivo.write("Marilia\n")
+
+*Fechar arquivo
+arquivo.close()
+
+*Voltar no histórico de linhas do arquivo
+arquivo.seek()
+print(arquivo.read())
+
+"""
+
+#Toda vez que abrir um arquivo no modo "w" ele substitui todo o conteúdo do arquivo toda vez que der um write
+
+#Para não substituir o melhor é abrir no modo "a" de append
+
+"""
+arquivo = open(filepath, "a")
+arquivo.write("Figueiredo\n")
+
+arquivo.close()
+
+open(filepath).read()  assim retorna os dois nomes
+
+"""
+
+#Imprimindo dentro do arquivo print("Brasil", file=open(filepath, "a"))
+#%%
+with open("arquivo.txt", "a") as arquivo:
+    # aqui temos o arquivo aberto para escrever
+    
+    arquivo.write("Hello")
+
+    # aqui o context manager garante o fechamento do arquivo 
+    # sem a necessidade de chamarmos explicitamente o .close()
+#%%
+# Ler multiplas linhas de um arquivo
+
+for linha in open("arquivo_grande.txt", "r"):
+    print(linha)
+
+#Lendo multiplas linhas de um arquivo
+
+open("arquivo.txt").readlines()
+['Este é um texto\n', 'cada item desta lista\n', 'é uma linha no arquivo']
+
+#%%
+# Exemplo
+"""
+texto = [
+    Título\n,
+    "\n",
+    "Este post fala sobre\n",
+    "o assunto bla bla\n",
+    ]
+
+filepath = os.path.join(path, "texto.txt")
+
+with open(filepath, "a") as arquivos:
+    arquivo.writelines(text)
+
+open(filepath).read()
+
+print(open(filepath).read())
+
+writelines --> recebe a lista inteira
+
+"""
+
+#%%# Juntando caminhos
+import os
+os.path.join("pasta2/pasta3/arquivo.txt")
+pasta2/pasta3/arquivo.txt
+
+# Obtendo caminho absoluto
+os.path.abspath(os.path.join("pasta2/pasta3/arquivo.txt"))
+/home/user/pasta2/pasta3/arquivo.txt
+
+# Obtendo o caminho absoluto para o diretorio atual
+os.path.abspath(os.curdir)
+/tmp/pasta2/foo/
+#%%
+# A Pathlib
+"""A pathlib foi adicionada no Python 3 e provê as mesmas funcionalidades do
+ os e open com algumas melhorias de sintaxe."""
+
+from pathlib import Path
+# Criar pasta
+Path("pasta3").mkdir(parents=True, exist_ok=True)
+# Criar arquivo na pasta
+Path("pasta3/arquivo.txt").touch()
+# Escrever no arquivo
+Path("pasta3/arquivo.txt").write_text("Bruno")
+# Ler o conteúdo do arquivo
+Path("pasta3/arquivo.txt").read_text()
+'Bruno'
+
+"""
+Uma caracteristica interessante do objeto Path é que ele permite ser combinado com 
+outros objetos do mesmo tipo ou str usando /
+
+"""
+
+caminho = Path("pasta1") / "pasta2" / Path("pasta3")
+print(caminho)
+pasta1/pasta2/pasta3
+
+#%%
+"""A escolha entre utilizar os ou pathlib se dá pelo gosto de quem está 
+programando as funcionalidades são as mesmas e na maioria dos casos as 
+funções executadas serão as mesmas, cabe a quem estiver programando 
+verificar qual das interfaces está lidando na hora de interagir com 
+os objetos file descriptors.
+
+"""
