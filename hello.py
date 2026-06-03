@@ -442,6 +442,172 @@ _version_ = "0.0.1"
 
 # %%
 
+# """
+# Hello World Multi Linguas.
+
+# Dependendo da lingua configurada no ambiente o programa 
+# exibe a mensagem correspondente.
+
+# Como usar:
+# Tenha a variavel LANG devidamente configurada exemplo:
+# export LANG=pt_BR
+
+# Ou informe atráves do CLI argument lang
+
+# Ou o usuário terá que digitar
+
+# Execução: python3 hello.py ou .hello.py
+# """
+# _version_ = "0.1.3"
+# _autor_   = "Marília Figueiredo"
+# _license_ = "Unlicense"
+
+# import os
+
+# import sys
+
+# """dessa forma consigo fazer Debugging
+
+# print(f"{sys.argv=}")  
+
+# """
+
+# arguments = {"lang": None, "count": 1,}           #dicionario acumulador
+# for arg in sys.argv[1:]:               #Fatiamento, para cada um dos argumentos em sys.argv começando do item 1 pra frente
+#     #TODO: Tratar ValueError 
+#     # dessa forma estou tratando o erro com EAFP
+#     try:                    
+#         key, value = arg.split("=")        #separa a chave e o valor pelo igual
+#     except ValueError as e:
+#         # TODO: Logging
+#         print(f"[Error] {str(e)}")
+#         print("Voce precisa usar o `=`")
+#         sys.exit(1)
+
+#     key = key.lstrip("-").strip()     #Reatribuindo a própria variável key para o valor dela mesma sem os tracinhos e outro strip pra retirar os espaços em branco do inicio e do fim
+#     value = value.strip()
+#     if key not in arguments:
+#         print(f"Opção Inválida {key}")
+#         sys.exit()
+#     arguments[key] = value
+
+# current_language = arguments["lang"]
+# #forma de realizar debugging   -  print(f"current_language=}"")
+
+# if current_language is None:
+#     # TODO: Usar repetição
+#     if "LANG" in os.environ:
+#         current_language = os.getenv("LANG")
+#     else:
+#         current_language = input("Qual a linguagem:")
+
+# current_language = current_language[:5]
+
+# msg = {
+#      "en_US": "Hello, World!",
+#      "pt_BR": "Olá, Mundo!",
+#      "it_IT": "Ciao, Mondo!",
+#      "es_SP": "Hola Mundo!",
+#      "fr_FR": "Bonjour Monde!",
+# }
+ 
+# #LBYL
+# if current_language in msg:
+#     message = msg[current_language] 
+# else:
+#     print(f"Language is invalid, choose from: {list(msg.keys())}")
+#     sys.exit(1)
+
+# print(message * int(arguments["count"]))
+# # %%
+# %%
+
+# """
+# Hello World Multi Linguas.
+
+# Dependendo da lingua configurada no ambiente o programa 
+# exibe a mensagem correspondente.
+
+# Como usar:
+# Tenha a variavel LANG devidamente configurada exemplo:
+# export LANG=pt_BR
+
+# Ou informe atráves do CLI argument lang
+
+# Ou o usuário terá que digitar
+
+# Execução: python3 hello.py ou .hello.py
+# """
+# _version_ = "0.1.3"
+# _autor_   = "Marília Figueiredo"
+# _license_ = "Unlicense"
+
+# import os
+
+# import sys
+
+# """dessa forma consigo fazer Debugging
+
+# print(f"{sys.argv=}")  
+
+# """
+
+# arguments = {"lang": None, "count": 1,}           #dicionario acumulador
+# for arg in sys.argv[1:]:               #Fatiamento, para cada um dos argumentos em sys.argv começando do item 1 pra frente
+#     #TODO: Tratar ValueError 
+#     # dessa forma estou tratando o erro com EAFP
+#     try:                    
+#         key, value = arg.split("=")        #separa a chave e o valor pelo igual
+#     except ValueError as e:
+#         # TODO: Logging
+#         print(f"[Error] {str(e)}")
+#         print("Voce precisa usar o `=`")
+#         sys.exit(1)
+
+#     key = key.lstrip("-").strip()     #Reatribuindo a própria variável key para o valor dela mesma sem os tracinhos e outro strip pra retirar os espaços em branco do inicio e do fim
+#     value = value.strip()
+#     if key not in arguments:
+#         print(f"Opção Inválida {key}")
+#         sys.exit()
+#     arguments[key] = value
+
+# current_language = arguments["lang"]
+# #forma de realizar debugging   -  print(f"current_language=}"")
+
+# if current_language is None:
+#     # TODO: Usar repetição
+#     if "LANG" in os.environ:
+#         current_language = os.getenv("LANG")
+#     else:
+#         current_language = input("Qual a linguagem:")
+
+# current_language = current_language[:5]
+
+# msg = {
+#      "en_US": "Hello, World!",
+#      "pt_BR": "Olá, Mundo!",
+#      "it_IT": "Ciao, Mondo!",
+#      "es_SP": "Hola Mundo!",
+#      "fr_FR": "Bonjour Monde!",
+# }
+
+# """ 
+# USANDO ESSE CODIGO A USABILIDADE NÃO É BOA, se o usuario informa qualquer coisa ele não avisa pra ele onde está o erro, o que foi informado errado 
+# try com valor default
+# message = msg.get(current_language, msg["en_US"])
+# """
+ 
+# #EAFP  USANDO ESSE É MELHOR
+# try:
+#     message = msg[current_language] 
+# except KeyError as e:
+#     print(f"[Error] {str(e)}")
+#     print(f"Language is invalid, choose from: {list(msg.keys())}")
+#     sys.exit(1)
+
+# print(message * int(arguments["count"]))
+# %%
+
 """
 Hello World Multi Linguas.
 
@@ -463,25 +629,41 @@ _autor_   = "Marília Figueiredo"
 _license_ = "Unlicense"
 
 import os
-
 import sys
+import logging
 
 """dessa forma consigo fazer Debugging
-
 print(f"{sys.argv=}")  
-
 """
+
+log_level = os.getenv("LOG_LEVEL", "WARNING").upper()
+# nossa instancia
+log = logging.Logger("logs.py", log_level)
+#level
+ch = logging.StreamHandler() 
+ch.setLevel(log_level)
+#formatacao
+fmt = logging.Formatter(
+    '%(asctime)s %(name)s %(levelname)s '
+    'l:%(lineno)d f:%(filename)s: %(message)s'
+)
+ch.setFormatter(fmt)
+#destino
+log.addHandler(ch)
+
 
 arguments = {"lang": None, "count": 1,}           #dicionario acumulador
 for arg in sys.argv[1:]:               #Fatiamento, para cada um dos argumentos em sys.argv começando do item 1 pra frente
-    #TODO: Tratar ValueError 
+
     # dessa forma estou tratando o erro com EAFP
     try:                    
         key, value = arg.split("=")        #separa a chave e o valor pelo igual
     except ValueError as e:
-        # TODO: Logging
-        print(f"[Error] {str(e)}")
-        print("Voce precisa usar o `=`")
+        log.error(
+            "Voce precisa usar o `=`, voce informou %s, try --key=value: %s",
+             arg,
+             str(e)
+        )
         sys.exit(1)
 
     key = key.lstrip("-").strip()     #Reatribuindo a própria variável key para o valor dela mesma sem os tracinhos e outro strip pra retirar os espaços em branco do inicio e do fim
@@ -510,88 +692,14 @@ msg = {
      "es_SP": "Hola Mundo!",
      "fr_FR": "Bonjour Monde!",
 }
+
+""" 
+USANDO ESSE CODIGO A USABILIDADE NÃO É BOA, se o usuario informa qualquer coisa ele não avisa pra ele onde está o erro, o que foi informado errado 
+try com valor default
+message = msg.get(current_language, msg["en_US"])
+"""
  
-#LBYL
-if current_language in msg:
-    message = msg[current_language] 
-else:
-    print(f"Language is invalid, choose from: {list(msg.keys())}")
-    sys.exit(1)
-
-print(message * int(arguments["count"]))
-# %%
-# %%
-
-"""
-Hello World Multi Linguas.
-
-Dependendo da lingua configurada no ambiente o programa 
-exibe a mensagem correspondente.
-
-Como usar:
-Tenha a variavel LANG devidamente configurada exemplo:
-export LANG=pt_BR
-
-Ou informe atráves do CLI argument lang
-
-Ou o usuário terá que digitar
-
-Execução: python3 hello.py ou .hello.py
-"""
-_version_ = "0.1.3"
-_autor_   = "Marília Figueiredo"
-_license_ = "Unlicense"
-
-import os
-
-import sys
-
-"""dessa forma consigo fazer Debugging
-
-print(f"{sys.argv=}")  
-
-"""
-
-arguments = {"lang": None, "count": 1,}           #dicionario acumulador
-for arg in sys.argv[1:]:               #Fatiamento, para cada um dos argumentos em sys.argv começando do item 1 pra frente
-    #TODO: Tratar ValueError 
-    # dessa forma estou tratando o erro com EAFP
-    try:                    
-        key, value = arg.split("=")        #separa a chave e o valor pelo igual
-    except ValueError as e:
-        # TODO: Logging
-        print(f"[Error] {str(e)}")
-        print("Voce precisa usar o `=`")
-        sys.exit(1)
-
-    key = key.lstrip("-").strip()     #Reatribuindo a própria variável key para o valor dela mesma sem os tracinhos e outro strip pra retirar os espaços em branco do inicio e do fim
-    value = value.strip()
-    if key not in arguments:
-        print(f"Opção Inválida {key}")
-        sys.exit()
-    arguments[key] = value
-
-current_language = arguments["lang"]
-#forma de realizar debugging   -  print(f"current_language=}"")
-
-if current_language is None:
-    # TODO: Usar repetição
-    if "LANG" in os.environ:
-        current_language = os.getenv("LANG")
-    else:
-        current_language = input("Qual a linguagem:")
-
-current_language = current_language[:5]
-
-msg = {
-     "en_US": "Hello, World!",
-     "pt_BR": "Olá, Mundo!",
-     "it_IT": "Ciao, Mondo!",
-     "es_SP": "Hola Mundo!",
-     "fr_FR": "Bonjour Monde!",
-}
- 
-#EAFP
+#EAFP  USANDO ESSE É MELHOR
 try:
     message = msg[current_language] 
 except KeyError as e:
